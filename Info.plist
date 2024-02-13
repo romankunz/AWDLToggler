@@ -2,7 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSUIElement</key>
-	<true/>
+    <key>LSUIElement</key>
+    <true/>
+    <key>SMPrivilegedExecutables</key>
+    <dict>
+        <key>RMAK.AWDLHelper</key>
+        <string>c24b32e5b93d2a1903d8f98522aedee1737ea192d750d15260888b04dc67867c</string>
+    </dict>
 </dict>
 </plist>

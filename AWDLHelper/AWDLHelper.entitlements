@@ -4,7 +4,7 @@
 <dict>
     <key>com.apple.security.smjobbless</key>
     <array>
-        <string>com.example.AWDLHelper</string>
+        <string>RMAK.AWDLToggler</string>
     </array>
 </dict>
 </plist>

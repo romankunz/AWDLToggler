@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Basic Helper Tool Configuration -->
+    <key>CFBundleIdentifier</key>
+    <string>RMAK.AWDLHelper</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleExecutable</key>
+    <string>AWDLHelper</string> <!-- Ensure this matches the actual binary name -->
+
+    <!-- Mark as Background Only -->
+    <key>LSBackgroundOnly</key>
+    <true/>
+
+    <!-- Specify Authorized Clients (Main App that can install this helper) -->
+    <key>SMAuthorizedClients</key>
+    <array>
+        <string>identifier "RMAK.AWDLToggler" and anchor apple generic and certificate leaf[subject.CN] = "Developer ID Application: Roman Kunz (8S85USXD5A)"</string>
+    </array>
+</dict>
+</plist>
