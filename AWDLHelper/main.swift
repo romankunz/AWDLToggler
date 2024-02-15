@@ -16,7 +16,7 @@ set -euo pipefail
 
 while true; do
     if ifconfig awdl0 | grep -q "<UP"; then
-        (set -x; sudo ifconfig awdl0 down)
+        (set -x; ifconfig awdl0 down)
     fi
     sleep 1
 done
@@ -48,12 +48,12 @@ func main() {
 
 func enableAWDL() {
     print("Enabling AWDL...")
-    runSystemCommand("sudo ifconfig awdl0 up")
+    runSystemCommand("ifconfig awdl0 up")
 }
 
 func disableAWDL() {
     print("Disabling AWDL...")
-    runSystemCommand("sudo ifconfig awdl0 down")
+    runSystemCommand("ifconfig awdl0 down")
 }
 
 func copyDaemonScriptIfNeeded() {
@@ -61,7 +61,7 @@ func copyDaemonScriptIfNeeded() {
     if !fileManager.fileExists(atPath: daemonScriptPath) {
         do {
             try daemonScriptContent.write(to: URL(fileURLWithPath: daemonScriptPath), atomically: true, encoding: .utf8)
-            runSystemCommand("sudo chmod +x \(daemonScriptPath)")
+            runSystemCommand("chmod +x \(daemonScriptPath)")
             print("Daemon script deployed to \(daemonScriptPath).")
         } catch {
             print("Failed to deploy daemon script: \(error)")
@@ -73,12 +73,12 @@ func startDaemon() {
     print("Starting daemon...")
     deployPlistIfNeeded()
     copyDaemonScriptIfNeeded()
-    runSystemCommand("sudo launchctl load \(daemonPlistPath)")
+    runSystemCommand("launchctl load \(daemonPlistPath)")
 }
 
 func stopDaemon() {
     print("Stopping daemon...")
-    runSystemCommand("sudo launchctl unload \(daemonPlistPath)")
+    runSystemCommand("launchctl unload \(daemonPlistPath)")
 }
 
 func deployPlistIfNeeded() {
@@ -102,8 +102,8 @@ func deployPlistIfNeeded() {
     if !fileManager.fileExists(atPath: daemonPlistPath) {
         do {
             try plistContent.write(to: URL(fileURLWithPath: daemonPlistPath), atomically: true, encoding: .utf8)
-            runSystemCommand("sudo chmod 644 \(daemonPlistPath)")
-            runSystemCommand("sudo chown root:wheel \(daemonPlistPath)")
+            runSystemCommand("chmod 644 \(daemonPlistPath)")
+            runSystemCommand("chown root:wheel \(daemonPlistPath)")
             print("Plist file deployed.")
         } catch {
             print("Failed to deploy plist file: \(error)")
