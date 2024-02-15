@@ -15,14 +15,14 @@ struct AWDLTogglerApp: App {
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var statusItem: NSStatusItem?
-    var statusMenuItem: NSMenuItem? // Reference to dynamically update status
+    var statusMenuItem: NSMenuItem?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         
         if let button = statusItem?.button {
             button.image = NSImage(named: "Toggler")
-            button.image?.isTemplate = true
+            button.image?.isTemplate = true // Ensure the image adapts to light/dark mode
         }
 
         installHelperIfNeeded()
