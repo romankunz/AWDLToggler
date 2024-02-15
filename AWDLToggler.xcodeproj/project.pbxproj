@@ -10,7 +10,6 @@
 		160DD09A2B7B7F3C00C46C10 /* AWDLTogglerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160DD0992B7B7F3C00C46C10 /* AWDLTogglerApp.swift */; };
 		160DD09E2B7B7F3D00C46C10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 160DD09D2B7B7F3D00C46C10 /* Assets.xcassets */; };
 		160DD0A12B7B7F3D00C46C10 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 160DD0A02B7B7F3D00C46C10 /* Preview Assets.xcassets */; };
-		160DD0A92B7B864500C46C10 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 160DD0A82B7B864500C46C10 /* Info.plist */; };
 		16927BF02B7B972700459DDA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16927BEF2B7B972700459DDA /* main.swift */; };
 		16927BF52B7B9A4400459DDA /* AWDLHelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 16927BED2B7B972700459DDA /* AWDLHelper */; };
 /* End PBXBuildFile section */
@@ -200,7 +199,6 @@
 			files = (
 				160DD0A12B7B7F3D00C46C10 /* Preview Assets.xcassets in Resources */,
 				160DD09E2B7B7F3D00C46C10 /* Assets.xcassets in Resources */,
-				160DD0A92B7B864500C46C10 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
