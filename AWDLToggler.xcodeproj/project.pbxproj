@@ -413,6 +413,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AWDLHelper/AWDLHelper.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8S85USXD5A;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -429,6 +430,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AWDLHelper/AWDLHelper.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8S85USXD5A;
 				ENABLE_HARDENED_RUNTIME = YES;
