@@ -1,5 +1,6 @@
 import SwiftUI
 import Cocoa
+import ServiceManagement
 
 @main
 struct AWDLTogglerApp: App {
@@ -7,7 +8,6 @@ struct AWDLTogglerApp: App {
 
     var body: some Scene {
         Settings {
-            // Placeholder for any settings UI; might not be needed for a menu bar app.
             Text("Settings View")
         }
     }
@@ -25,13 +25,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             button.image?.isTemplate = true
         }
 
+        installHelperIfNeeded()
         constructMenu()
     }
 
     func constructMenu() {
         let menu = NSMenu()
         
-        // Initialize the AWDL status menu item with a placeholder title
         statusMenuItem = NSMenuItem(title: "Status: Checking...", action: nil, keyEquivalent: "")
         statusMenuItem?.isEnabled = false
         menu.addItem(statusMenuItem!)
@@ -41,11 +41,33 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(terminateApp), keyEquivalent: "q"))
 
-        menu.delegate = self // Set AppDelegate as the menu delegate
         statusItem?.menu = menu
     }
 
-    // NSMenuDelegate method to update the menu item just before the menu opens
+    func installHelperIfNeeded() {
+        let helperBundleID = "com.rmak.AWDLHelper" // Adjust to your helper's actual bundle ID
+        var authRef: AuthorizationRef?
+        let authStatus = AuthorizationCreate(nil, nil, [.extendRights, .interactionAllowed], &authRef)
+        
+        guard authStatus == errAuthorizationSuccess else {
+            print("Failed to create authorization reference: \(authStatus)")
+            return
+        }
+        
+        var error: Unmanaged<CFError>?
+        if !SMJobBless(kSMDomainSystemLaunchd, helperBundleID as CFString, authRef, &error) {
+            if let error = error?.takeRetainedValue() {
+                print("Failed to install helper with error: \(error)")
+            }
+        } else {
+            print("Helper tool installed successfully.")
+        }
+        
+        if authRef != nil {
+            AuthorizationFree(authRef!, [])
+        }
+    }
+
     func menuWillOpen(_ menu: NSMenu) {
         statusMenuItem?.title = "Status: \(awdlStatus())"
     }
@@ -75,12 +97,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @objc func enableAWDL() {
         runHelperCommand(["enable"])
-        // No need to explicitly call constructMenu() here as the menu will update automatically when clicked
     }
     
     @objc func disableAWDL() {
         runHelperCommand(["disable"])
-        // No need to explicitly call constructMenu() here as the menu will update automatically when clicked
     }
     
     @objc func terminateApp() {
@@ -113,4 +133,3 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
 }
-
