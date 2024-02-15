@@ -13,15 +13,16 @@ struct AWDLTogglerApp: App {
     }
 }
 
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var statusItem: NSStatusItem?
+    var statusMenuItem: NSMenuItem? // Reference to dynamically update status
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         
         if let button = statusItem?.button {
-            button.image = NSImage(named: "Toggler") // Ensure this name matches your image set name in the asset catalog.
-            button.image?.isTemplate = true // Consider making it a template image if it should adapt to light/dark mode.
+            button.image = NSImage(named: "Toggler")
+            button.image?.isTemplate = true
         }
 
         constructMenu()
@@ -30,18 +31,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func constructMenu() {
         let menu = NSMenu()
         
-        // Dynamically add the AWDL status menu item
-        let statusMenuItem = NSMenuItem(title: "Status: \(awdlStatus())", action: nil, keyEquivalent: "")
-        statusMenuItem.isEnabled = false
-        menu.addItem(statusMenuItem)
+        // Initialize the AWDL status menu item with a placeholder title
+        statusMenuItem = NSMenuItem(title: "Status: Checking...", action: nil, keyEquivalent: "")
+        statusMenuItem?.isEnabled = false
+        menu.addItem(statusMenuItem!)
         
         menu.addItem(NSMenuItem(title: "Enable AWDL", action: #selector(enableAWDL), keyEquivalent: "e"))
         menu.addItem(NSMenuItem(title: "Disable AWDL", action: #selector(disableAWDL), keyEquivalent: "d"))
-        menu.addItem(NSMenuItem.separator()) // Adds a separator
+        menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(terminateApp), keyEquivalent: "q"))
 
-        // Assign the constructed menu to the status item
-        statusItem?.menu = menu // This line ensures the menu is associated with the status item.
+        menu.delegate = self // Set AppDelegate as the menu delegate
+        statusItem?.menu = menu
+    }
+
+    // NSMenuDelegate method to update the menu item just before the menu opens
+    func menuWillOpen(_ menu: NSMenu) {
+        statusMenuItem?.title = "Status: \(awdlStatus())"
     }
 
     func awdlStatus() -> String {
@@ -69,12 +75,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func enableAWDL() {
         runHelperCommand(["enable"])
-        constructMenu() // Refresh the menu to reflect the updated status.
+        // No need to explicitly call constructMenu() here as the menu will update automatically when clicked
     }
     
     @objc func disableAWDL() {
         runHelperCommand(["disable"])
-        constructMenu() // Refresh the menu to reflect the updated status.
+        // No need to explicitly call constructMenu() here as the menu will update automatically when clicked
     }
     
     @objc func terminateApp() {
@@ -107,3 +113,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 }
+
