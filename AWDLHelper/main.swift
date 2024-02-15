@@ -48,12 +48,12 @@ func main() {
 
 func enableAWDL() {
     print("Enabling AWDL...")
-    runSystemCommand("ifconfig awdl0 up")
+    runSystemCommand("sudo ifconfig awdl0 up")
 }
 
 func disableAWDL() {
     print("Disabling AWDL...")
-    runSystemCommand("ifconfig awdl0 down")
+    runSystemCommand("sudo ifconfig awdl0 down")
 }
 
 func copyDaemonScriptIfNeeded() {
