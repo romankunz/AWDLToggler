@@ -124,26 +124,25 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     func runHelperCommand(_ arguments: [String]) {
-        guard let helperURL = Bundle.main.url(forResource: "AWDLHelper", withExtension: nil) else {
-            print("AWDLHelper not found.")
-            return
-        }
-        
+        // Define the path to the helper tool directly
+        let helperPath = "/Library/PrivilegedHelperTools/AWDLHelper"
+
         let process = Process()
         let pipe = Pipe()
-        
-        process.executableURL = helperURL
+
+        // Set the launchPath for the Process to the direct path of the helper
+        process.launchPath = helperPath
         process.arguments = arguments
         process.standardOutput = pipe
         process.standardError = pipe
-        
+
         do {
             try process.run()
             process.waitUntilExit()
-            
+
             let data = pipe.fileHandleForReading.readDataToEndOfFile()
             let output = String(data: data, encoding: .utf8) ?? ""
-            print(output)
+            print("Helper output: \(output)")
         } catch {
             print("Failed to run AWDLHelper: \(error)")
         }

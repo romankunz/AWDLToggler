@@ -3,15 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.rmak.AWDLToggler</string>
-	<key>CFBundleVersion</key>
-	<string>1</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
-	<key>CFBundleExecutable</key>
-	<string>AWDLToggler</string>
-	<key>LSUIElement</key>
-	<true/>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>SMPrivilegedExecutables</key>
 	<dict>
 		<key>com.rmak.AWDLHelper</key>

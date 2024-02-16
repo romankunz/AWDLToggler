@@ -7,20 +7,9 @@ enum Command: String {
     case stopDaemon = "stopDaemon"
 }
 
+let helperPlistPath = "/Library/LaunchDaemons/com.rmak.awdlhelper.plist"
 let daemonPlistPath = "/Library/LaunchDaemons/com.rmak.awdltoggler.plist"
-let daemonScriptPath = "/usr/local/bin/AWDLDaemon.sh"
-let daemonScriptContent = """
-#!/usr/bin/env bash
-
-set -euo pipefail
-
-while true; do
-    if ifconfig awdl0 | grep -q "<UP"; then
-        (set -x; ifconfig awdl0 down)
-    fi
-    sleep 1
-done
-"""
+let daemonScriptPath = "/usr/local/bin/AWDLDaemon"
 
 func main() {
     guard CommandLine.arguments.count > 1 else {
@@ -33,6 +22,9 @@ func main() {
         print("Invalid command.")
         return
     }
+    
+    // Deploy the helper plist if needed
+    deployHelperPlistIfNeeded()
 
     switch command {
     case .enable:
@@ -46,9 +38,29 @@ func main() {
     }
 }
 
+func deployHelperPlistIfNeeded() {
+    let helperPlistContent = """
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>com.rmak.awdlhelper</string>
+        <key>Program</key>
+        <string>/Library/PrivilegedHelperTools/AWDLHelper</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+    </dict>
+    </plist>
+    """
+    deployPlistIfNeeded(plistPath: helperPlistPath, plistContent: helperPlistContent)
+}
+
 func enableAWDL() {
     print("Enabling AWDL...")
-    stopDaemon()
+    stopDaemon() // Ensure the daemon is stopped before attempting to bring AWDL0 up
     runSystemCommand("ifconfig awdl0 up")
 }
 
@@ -72,24 +84,18 @@ func copyDaemonScriptIfNeeded() {
 
 func startDaemon() {
     print("Starting daemon...")
-    deployPlistIfNeeded()
+    deployDaemonPlistIfNeeded()
     copyDaemonScriptIfNeeded()
     runSystemCommand("launchctl load \(daemonPlistPath)")
 }
 
 func stopDaemon() {
     print("Stopping daemon...")
-    let daemonLoaded = runSystemCommandWithOutput("launchctl list | grep -q com.rmak.awdltoggler") == 0
-    if daemonLoaded {
-        runSystemCommand("launchctl unload \(daemonPlistPath)")
-        print("Daemon stopped successfully.")
-    } else {
-        print("Daemon was not running.")
-    }
+    runSystemCommand("launchctl unload \(daemonPlistPath)")
 }
 
-func deployPlistIfNeeded() {
-    let plistContent = """
+func deployDaemonPlistIfNeeded() {
+    let daemonPlistContent = """
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -105,15 +111,19 @@ func deployPlistIfNeeded() {
     </dict>
     </plist>
     """
+    deployPlistIfNeeded(plistPath: daemonPlistPath, plistContent: daemonPlistContent)
+}
+
+func deployPlistIfNeeded(plistPath: String, plistContent: String) {
     let fileManager = FileManager.default
-    if !fileManager.fileExists(atPath: daemonPlistPath) {
+    if !fileManager.fileExists(atPath: plistPath) {
         do {
-            try plistContent.write(to: URL(fileURLWithPath: daemonPlistPath), atomically: true, encoding: .utf8)
-            runSystemCommand("chmod 644 \(daemonPlistPath)")
-            runSystemCommand("chown root:wheel \(daemonPlistPath)")
-            print("Plist file deployed.")
+            try plistContent.write(to: URL(fileURLWithPath: plistPath), atomically: true, encoding: .utf8)
+            runSystemCommand("chmod 644 \(plistPath)")
+            runSystemCommand("chown root:wheel \(plistPath)")
+            print("Plist file deployed at \(plistPath).")
         } catch {
-            print("Failed to deploy plist file: \(error)")
+            print("Failed to deploy plist file at \(plistPath): \(error)")
         }
     }
 }
@@ -159,4 +169,3 @@ func runSystemCommandWithOutput(_ command: String) -> Int32 {
 }
 
 main()
-
