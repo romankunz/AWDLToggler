@@ -14,7 +14,7 @@
 	<true/>
 	<key>SMAuthorizedClients</key>
 	<array>
-		<string>identifier "com.rmak.AWDLToggler" and anchor apple generic and certificate leaf[subject.CN] = "Developer ID Application: Roman Kunz (8S85USXD5A)"</string>
+		<string>identifier &quot;com.rmak.AWDLToggler&quot; and anchor apple generic and certificate leaf[subject.CN] = &quot;Developer ID Application: Roman Kunz (8S85USXD5A)&quot;</string>
 	</array>
 </dict>
 </plist>

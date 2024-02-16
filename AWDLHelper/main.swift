@@ -48,12 +48,13 @@ func main() {
 
 func enableAWDL() {
     print("Enabling AWDL...")
+    stopDaemon()
     runSystemCommand("ifconfig awdl0 up")
 }
 
 func disableAWDL() {
     print("Disabling AWDL...")
-    runSystemCommand("ifconfig awdl0 down")
+    startDaemon()
 }
 
 func copyDaemonScriptIfNeeded() {
@@ -78,7 +79,13 @@ func startDaemon() {
 
 func stopDaemon() {
     print("Stopping daemon...")
-    runSystemCommand("launchctl unload \(daemonPlistPath)")
+    let daemonLoaded = runSystemCommandWithOutput("launchctl list | grep -q com.rmak.awdltoggler") == 0
+    if daemonLoaded {
+        runSystemCommand("launchctl unload \(daemonPlistPath)")
+        print("Daemon stopped successfully.")
+    } else {
+        print("Daemon was not running.")
+    }
 }
 
 func deployPlistIfNeeded() {
@@ -129,6 +136,25 @@ func runSystemCommand(_ command: String) {
         print(output)
     } catch {
         print("Failed to execute command: \(error)")
+    }
+}
+
+func runSystemCommandWithOutput(_ command: String) -> Int32 {
+    let process = Process()
+    let pipe = Pipe()
+
+    process.standardOutput = pipe
+    process.standardError = pipe
+    process.arguments = ["-c", command]
+    process.launchPath = "/bin/zsh"
+
+    do {
+        try process.run()
+        process.waitUntilExit()
+        return process.terminationStatus
+    } catch {
+        print("Failed to execute command: \(error)")
+        return 1
     }
 }
 

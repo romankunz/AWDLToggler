@@ -10,11 +10,21 @@
 		160DD09A2B7B7F3C00C46C10 /* AWDLTogglerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160DD0992B7B7F3C00C46C10 /* AWDLTogglerApp.swift */; };
 		160DD09E2B7B7F3D00C46C10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 160DD09D2B7B7F3D00C46C10 /* Assets.xcassets */; };
 		160DD0A12B7B7F3D00C46C10 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 160DD0A02B7B7F3D00C46C10 /* Preview Assets.xcassets */; };
+		16604F492B7F4E3600AE95BE /* AWDLHelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 16927BED2B7B972700459DDA /* AWDLHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		16927BF02B7B972700459DDA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16927BEF2B7B972700459DDA /* main.swift */; };
-		16927BF52B7B9A4400459DDA /* AWDLHelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 16927BED2B7B972700459DDA /* AWDLHelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		16604F482B7F4DF200AE95BE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				16604F492B7F4E3600AE95BE /* AWDLHelper in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		16927BEB2B7B972700459DDA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -23,16 +33,6 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
-		};
-		16927BF42B7B9A2100459DDA /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-				16927BF52B7B9A4400459DDA /* AWDLHelper in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -127,7 +127,7 @@
 				160DD0922B7B7F3C00C46C10 /* Sources */,
 				160DD0932B7B7F3C00C46C10 /* Frameworks */,
 				160DD0942B7B7F3C00C46C10 /* Resources */,
-				16927BF42B7B9A2100459DDA /* CopyFiles */,
+				16604F482B7F4DF200AE95BE /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -349,7 +349,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = AWDLToggler/AWDLToggler.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -381,7 +380,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = AWDLToggler/AWDLToggler.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -411,7 +409,6 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AWDLHelper/AWDLHelper.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8S85USXD5A;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -429,7 +426,6 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = AWDLHelper/AWDLHelper.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8S85USXD5A;
 				ENABLE_HARDENED_RUNTIME = YES;

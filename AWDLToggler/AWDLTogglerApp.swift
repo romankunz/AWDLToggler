@@ -42,34 +42,50 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(terminateApp), keyEquivalent: "q"))
 
         statusItem?.menu = menu
+        menu.delegate = self // Ensure AppDelegate is set as the menu's delegate
     }
 
     func installHelperIfNeeded() {
-        let helperBundleID = "com.rmak.AWDLHelper" // Adjust to your helper's actual bundle ID
+        let helperBundleID = "com.rmak.AWDLHelper" // Ensure this matches your helper's CFBundleIdentifier
         var authRef: AuthorizationRef?
-        let authStatus = AuthorizationCreate(nil, nil, [.extendRights, .interactionAllowed], &authRef)
+        var authStatus = OSStatus(errAuthorizationDenied)
+        
+        // Create an Authorization Reference
+        authStatus = AuthorizationCreate(nil, nil, [.extendRights, .interactionAllowed], &authRef)
         
         guard authStatus == errAuthorizationSuccess else {
-            print("Failed to create authorization reference: \(authStatus)")
+            print("Authorization failed: \(authStatus)")
             return
         }
         
+        // Attempt to install the helper using SMJobBless
         var error: Unmanaged<CFError>?
-        if !SMJobBless(kSMDomainSystemLaunchd, helperBundleID as CFString, authRef, &error) {
+        if SMJobBless(kSMDomainSystemLaunchd, helperBundleID as CFString, authRef, &error) {
+            print("Successfully installed helper.")
+        } else {
             if let error = error?.takeRetainedValue() {
                 print("Failed to install helper with error: \(error)")
             }
-        } else {
-            print("Helper tool installed successfully.")
         }
         
+        // Always free the Authorization Reference when done
         if authRef != nil {
-            AuthorizationFree(authRef!, [])
+            AuthorizationFree(authRef!, [.destroyRights])
         }
     }
 
     func menuWillOpen(_ menu: NSMenu) {
-        statusMenuItem?.title = "Status: \(awdlStatus())"
+        updateAWDLStatus()
+    }
+
+    func updateAWDLStatus() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let status = self.awdlStatus()
+            
+            DispatchQueue.main.async {
+                self.statusMenuItem?.title = "Status: \(status)"
+            }
+        }
     }
 
     func awdlStatus() -> String {
