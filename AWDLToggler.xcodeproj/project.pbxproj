@@ -10,29 +10,66 @@
 		160DD09A2B7B7F3C00C46C10 /* AWDLTogglerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160DD0992B7B7F3C00C46C10 /* AWDLTogglerApp.swift */; };
 		160DD09E2B7B7F3D00C46C10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 160DD09D2B7B7F3D00C46C10 /* Assets.xcassets */; };
 		160DD0A12B7B7F3D00C46C10 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 160DD0A02B7B7F3D00C46C10 /* Preview Assets.xcassets */; };
-		16604F492B7F4E3600AE95BE /* AWDLHelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 16927BED2B7B972700459DDA /* AWDLHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		16512B5E2B8353DB0069B48A /* AWDLDaemon in CopyFiles */ = {isa = PBXBuildFile; fileRef = 16604F502B7FC60C00AE95BE /* AWDLDaemon */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		16512B5F2B8354E30069B48A /* AWDLHelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 16927BED2B7B972700459DDA /* AWDLHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		16512B672B8356360069B48A /* AWDLHelperService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16512B662B8356360069B48A /* AWDLHelperService.swift */; };
+		16512B692B8356360069B48A /* AWDLHelperServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16512B682B8356360069B48A /* AWDLHelperServiceProtocol.swift */; };
+		16512B6B2B8356360069B48A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16512B6A2B8356360069B48A /* main.swift */; };
+		16512B712B8356360069B48A /* AWDLHelperService.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = 16512B642B8356360069B48A /* AWDLHelperService.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		16604F532B7FC60C00AE95BE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16604F522B7FC60C00AE95BE /* main.swift */; };
 		16927BF02B7B972700459DDA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16927BEF2B7B972700459DDA /* main.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		16512B6E2B8356360069B48A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 160DD08E2B7B7F3C00C46C10 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 16512B632B8356360069B48A;
+			remoteInfo = AWDLHelperService;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		16512B702B8356360069B48A /* Embed XPC Services */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
+			dstSubfolderSpec = 16;
+			files = (
+				16512B712B8356360069B48A /* AWDLHelperService.xpc in Embed XPC Services */,
+			);
+			name = "Embed XPC Services";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		16604F482B7F4DF200AE95BE /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = Contents/Library/LaunchServices;
-			dstSubfolderSpec = 1;
+			dstSubfolderSpec = 6;
 			files = (
-				16604F492B7F4E3600AE95BE /* AWDLHelper in CopyFiles */,
+				16512B5F2B8354E30069B48A /* AWDLHelper in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16604F4E2B7FC60C00AE95BE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		16927BEB2B7B972700459DDA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = Contents/Helpers;
+			dstSubfolderSpec = 6;
 			files = (
+				16512B5E2B8353DB0069B48A /* AWDLDaemon in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -44,7 +81,14 @@
 		160DD0A22B7B7F3D00C46C10 /* AWDLToggler.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AWDLToggler.entitlements; path = AWDLToggler/AWDLToggler.entitlements; sourceTree = SOURCE_ROOT; };
 		160DD0A82B7B864500C46C10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		162DE02B2B7CCE720033985A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		16604F4A2B7FA7E900AE95BE /* AWDLDaemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWDLDaemon.swift; sourceTree = "<group>"; };
+		16512B642B8356360069B48A /* AWDLHelperService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = AWDLHelperService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
+		16512B662B8356360069B48A /* AWDLHelperService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWDLHelperService.swift; sourceTree = "<group>"; };
+		16512B682B8356360069B48A /* AWDLHelperServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWDLHelperServiceProtocol.swift; sourceTree = "<group>"; };
+		16512B6A2B8356360069B48A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		16512B6C2B8356360069B48A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		16512B6D2B8356360069B48A /* AWDLHelperService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AWDLHelperService.entitlements; sourceTree = "<group>"; };
+		16604F502B7FC60C00AE95BE /* AWDLDaemon */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AWDLDaemon; sourceTree = BUILT_PRODUCTS_DIR; };
+		16604F522B7FC60C00AE95BE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		16927BED2B7B972700459DDA /* AWDLHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AWDLHelper; sourceTree = BUILT_PRODUCTS_DIR; };
 		16927BEF2B7B972700459DDA /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = main.swift; path = AWDLHelper/main.swift; sourceTree = SOURCE_ROOT; };
 		16927BF72B7BA54000459DDA /* AWDLHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AWDLHelper.entitlements; path = AWDLHelper/AWDLHelper.entitlements; sourceTree = SOURCE_ROOT; };
@@ -52,6 +96,20 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		160DD0932B7B7F3C00C46C10 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16512B612B8356360069B48A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16604F4D2B7FC60C00AE95BE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -73,6 +131,8 @@
 			children = (
 				160DD0982B7B7F3C00C46C10 /* AWDLToggler */,
 				16927BEE2B7B972700459DDA /* AWDLHelper */,
+				16604F512B7FC60C00AE95BE /* AWDLDaemon */,
+				16512B652B8356360069B48A /* AWDLHelperService */,
 				160DD0972B7B7F3C00C46C10 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -82,6 +142,8 @@
 			children = (
 				160DD0962B7B7F3C00C46C10 /* AWDLToggler.app */,
 				16927BED2B7B972700459DDA /* AWDLHelper */,
+				16604F502B7FC60C00AE95BE /* AWDLDaemon */,
+				16512B642B8356360069B48A /* AWDLHelperService.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -106,13 +168,32 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		16512B652B8356360069B48A /* AWDLHelperService */ = {
+			isa = PBXGroup;
+			children = (
+				16512B662B8356360069B48A /* AWDLHelperService.swift */,
+				16512B682B8356360069B48A /* AWDLHelperServiceProtocol.swift */,
+				16512B6A2B8356360069B48A /* main.swift */,
+				16512B6C2B8356360069B48A /* Info.plist */,
+				16512B6D2B8356360069B48A /* AWDLHelperService.entitlements */,
+			);
+			path = AWDLHelperService;
+			sourceTree = "<group>";
+		};
+		16604F512B7FC60C00AE95BE /* AWDLDaemon */ = {
+			isa = PBXGroup;
+			children = (
+				16604F522B7FC60C00AE95BE /* main.swift */,
+			);
+			path = AWDLDaemon;
+			sourceTree = "<group>";
+		};
 		16927BEE2B7B972700459DDA /* AWDLHelper */ = {
 			isa = PBXGroup;
 			children = (
 				16927BF72B7BA54000459DDA /* AWDLHelper.entitlements */,
 				16927BEF2B7B972700459DDA /* main.swift */,
 				162DE02B2B7CCE720033985A /* Info.plist */,
-				16604F4A2B7FA7E900AE95BE /* AWDLDaemon.swift */,
 			);
 			path = AWDLHelper;
 			sourceTree = "<group>";
@@ -128,15 +209,51 @@
 				160DD0932B7B7F3C00C46C10 /* Frameworks */,
 				160DD0942B7B7F3C00C46C10 /* Resources */,
 				16604F482B7F4DF200AE95BE /* CopyFiles */,
+				16512B702B8356360069B48A /* Embed XPC Services */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				16512B6F2B8356360069B48A /* PBXTargetDependency */,
 			);
 			name = AWDLToggler;
 			productName = AWDLToggler;
 			productReference = 160DD0962B7B7F3C00C46C10 /* AWDLToggler.app */;
 			productType = "com.apple.product-type.application";
+		};
+		16512B632B8356360069B48A /* AWDLHelperService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16512B722B8356360069B48A /* Build configuration list for PBXNativeTarget "AWDLHelperService" */;
+			buildPhases = (
+				16512B602B8356360069B48A /* Sources */,
+				16512B612B8356360069B48A /* Frameworks */,
+				16512B622B8356360069B48A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AWDLHelperService;
+			productName = AWDLHelperService;
+			productReference = 16512B642B8356360069B48A /* AWDLHelperService.xpc */;
+			productType = "com.apple.product-type.xpc-service";
+		};
+		16604F4F2B7FC60C00AE95BE /* AWDLDaemon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16604F542B7FC60C00AE95BE /* Build configuration list for PBXNativeTarget "AWDLDaemon" */;
+			buildPhases = (
+				16604F4C2B7FC60C00AE95BE /* Sources */,
+				16604F4D2B7FC60C00AE95BE /* Frameworks */,
+				16604F4E2B7FC60C00AE95BE /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AWDLDaemon;
+			productName = AWDLDaemon;
+			productReference = 16604F502B7FC60C00AE95BE /* AWDLDaemon */;
+			productType = "com.apple.product-type.tool";
 		};
 		16927BEC2B7B972700459DDA /* AWDLHelper */ = {
 			isa = PBXNativeTarget;
@@ -168,6 +285,12 @@
 					160DD0952B7B7F3C00C46C10 = {
 						CreatedOnToolsVersion = 15.0.1;
 					};
+					16512B632B8356360069B48A = {
+						CreatedOnToolsVersion = 15.0.1;
+					};
+					16604F4F2B7FC60C00AE95BE = {
+						CreatedOnToolsVersion = 15.0.1;
+					};
 					16927BEC2B7B972700459DDA = {
 						CreatedOnToolsVersion = 15.0.1;
 					};
@@ -188,6 +311,8 @@
 			targets = (
 				160DD0952B7B7F3C00C46C10 /* AWDLToggler */,
 				16927BEC2B7B972700459DDA /* AWDLHelper */,
+				16604F4F2B7FC60C00AE95BE /* AWDLDaemon */,
+				16512B632B8356360069B48A /* AWDLHelperService */,
 			);
 		};
 /* End PBXProject section */
@@ -202,6 +327,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		16512B622B8356360069B48A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -210,6 +342,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				160DD09A2B7B7F3C00C46C10 /* AWDLTogglerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16512B602B8356360069B48A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16512B672B8356360069B48A /* AWDLHelperService.swift in Sources */,
+				16512B692B8356360069B48A /* AWDLHelperServiceProtocol.swift in Sources */,
+				16512B6B2B8356360069B48A /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16604F4C2B7FC60C00AE95BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16604F532B7FC60C00AE95BE /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,6 +372,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		16512B6F2B8356360069B48A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 16512B632B8356360069B48A /* AWDLHelperService */;
+			targetProxy = 16512B6E2B8356360069B48A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		160DD0A32B7B7F3D00C46C10 /* Debug */ = {
@@ -345,6 +503,7 @@
 		160DD0A62B7B7F3D00C46C10 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = AWDLToggler/AWDLToggler.entitlements;
@@ -377,6 +536,7 @@
 		160DD0A72B7B7F3D00C46C10 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = AWDLToggler/AWDLToggler.entitlements;
@@ -402,6 +562,74 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		16512B732B8356360069B48A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = AWDLHelperService/AWDLHelperService.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8S85USXD5A;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AWDLHelperService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AWDLHelperService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = RMAK.AWDLHelperService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		16512B742B8356360069B48A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = AWDLHelperService/AWDLHelperService.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8S85USXD5A;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AWDLHelperService/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AWDLHelperService;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = RMAK.AWDLHelperService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		16604F552B7FC60C00AE95BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8S85USXD5A;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		16604F562B7FC60C00AE95BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8S85USXD5A;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -457,6 +685,24 @@
 			buildConfigurations = (
 				160DD0A62B7B7F3D00C46C10 /* Debug */,
 				160DD0A72B7B7F3D00C46C10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		16512B722B8356360069B48A /* Build configuration list for PBXNativeTarget "AWDLHelperService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16512B732B8356360069B48A /* Debug */,
+				16512B742B8356360069B48A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		16604F542B7FC60C00AE95BE /* Build configuration list for PBXNativeTarget "AWDLDaemon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16604F552B7FC60C00AE95BE /* Debug */,
+				16604F562B7FC60C00AE95BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

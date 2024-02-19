@@ -3,13 +3,12 @@ import Foundation
 enum Command: String {
     case enable = "enable"
     case disable = "disable"
-    case startDaemon = "startDaemon"
-    case stopDaemon = "stopDaemon"
 }
 
-let helperPlistPath = "/Library/LaunchDaemons/com.rmak.awdlhelper.plist"
 let daemonPlistPath = "/Library/LaunchDaemons/com.rmak.awdltoggler.plist"
-let daemonScriptPath = "/usr/local/bin/AWDLDaemon"
+let daemonBinaryPath = "/usr/local/bin/AWDLDaemon"
+// Adjust the path according to where your app bundle actually stores the daemon
+let daemonBinarySourcePath = Bundle.main.bundlePath + "/Contents/Helpers/AWDLDaemon"
 
 func main() {
     guard CommandLine.arguments.count > 1 else {
@@ -22,149 +21,103 @@ func main() {
         print("Invalid command.")
         return
     }
-    
-    // Deploy the helper plist if needed
-    deployHelperPlistIfNeeded()
 
     switch command {
     case .enable:
         enableAWDL()
     case .disable:
         disableAWDL()
-    case .startDaemon:
-        startDaemon()
-    case .stopDaemon:
-        stopDaemon()
     }
-}
-
-func deployHelperPlistIfNeeded() {
-    let helperPlistContent = """
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-        <key>Label</key>
-        <string>com.rmak.awdlhelper</string>
-        <key>Program</key>
-        <string>/Library/PrivilegedHelperTools/AWDLHelper</string>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <true/>
-    </dict>
-    </plist>
-    """
-    deployPlistIfNeeded(plistPath: helperPlistPath, plistContent: helperPlistContent)
 }
 
 func enableAWDL() {
     print("Enabling AWDL...")
-    stopDaemon() // Ensure the daemon is stopped before attempting to bring AWDL0 up
-    runSystemCommand("ifconfig awdl0 up")
+    // Unload the daemon
+    if runSystemCommand("/bin/launchctl", arguments: ["unload", daemonPlistPath]) {
+        print("Daemon unloaded successfully.")
+    } else {
+        print("Failed to unload daemon.")
+    }
+    // Bring AWDL0 up
+    if runSystemCommand("/sbin/ifconfig", arguments: ["awdl0", "up"]) {
+        print("AWDL interface enabled.")
+    } else {
+        print("Failed to enable AWDL interface.")
+    }
 }
 
 func disableAWDL() {
     print("Disabling AWDL...")
-    startDaemon()
+    // Copy the daemon binary if it's not already there
+    copyDaemonBinaryIfNeeded()
+    // Deploy the LaunchDaemon plist and load the daemon
+    deployDaemonPlistAndLoad()
 }
 
-func copyDaemonScriptIfNeeded() {
+func copyDaemonBinaryIfNeeded() {
     let fileManager = FileManager.default
-    if !fileManager.fileExists(atPath: daemonScriptPath) {
+    if !fileManager.fileExists(atPath: daemonBinaryPath) {
         do {
-            try daemonScriptContent.write(to: URL(fileURLWithPath: daemonScriptPath), atomically: true, encoding: .utf8)
-            runSystemCommand("chmod +x \(daemonScriptPath)")
-            print("Daemon script deployed to \(daemonScriptPath).")
+            try fileManager.copyItem(atPath: daemonBinarySourcePath, toPath: daemonBinaryPath)
+            print("Daemon binary copied.")
         } catch {
-            print("Failed to deploy daemon script: \(error)")
+            print("Failed to copy daemon binary: \(error)")
         }
     }
 }
 
-func startDaemon() {
-    print("Starting daemon...")
-    deployDaemonPlistIfNeeded()
-    copyDaemonScriptIfNeeded()
-    runSystemCommand("launchctl load \(daemonPlistPath)")
-}
-
-func stopDaemon() {
-    print("Stopping daemon...")
-    runSystemCommand("launchctl unload \(daemonPlistPath)")
-}
-
-func deployDaemonPlistIfNeeded() {
-    let daemonPlistContent = """
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-        <key>Label</key>
-        <string>com.rmak.awdltoggler</string>
-        <key>Program</key>
-        <string>\(daemonScriptPath)</string>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <true/>
-    </dict>
-    </plist>
-    """
-    deployPlistIfNeeded(plistPath: daemonPlistPath, plistContent: daemonPlistContent)
-}
-
-func deployPlistIfNeeded(plistPath: String, plistContent: String) {
+func deployDaemonPlistAndLoad() {
     let fileManager = FileManager.default
-    if !fileManager.fileExists(atPath: plistPath) {
+    if !fileManager.fileExists(atPath: daemonPlistPath) {
+        let daemonPlistContent = """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>Label</key>
+            <string>com.rmak.awdltoggler</string>
+            <key>Program</key>
+            <string>\(daemonBinaryPath)</string>
+            <key>RunAtLoad</key>
+            <true/>
+            <key>KeepAlive</key>
+            <true/>
+        </dict>
+        </plist>
+        """
         do {
-            try plistContent.write(to: URL(fileURLWithPath: plistPath), atomically: true, encoding: .utf8)
-            runSystemCommand("chmod 644 \(plistPath)")
-            runSystemCommand("chown root:wheel \(plistPath)")
-            print("Plist file deployed at \(plistPath).")
+            try daemonPlistContent.write(to: URL(fileURLWithPath: daemonPlistPath), atomically: true, encoding: .utf8)
+            print("Daemon plist deployed.")
         } catch {
-            print("Failed to deploy plist file at \(plistPath): \(error)")
+            print("Failed to deploy daemon plist: \(error)")
         }
+    }
+
+    if runSystemCommand("/bin/launchctl", arguments: ["load", daemonPlistPath]) {
+        print("Daemon loaded successfully.")
+    } else {
+        print("Failed to load daemon.")
     }
 }
 
-func runSystemCommand(_ command: String) {
+func runSystemCommand(_ launchPath: String, arguments: [String]) -> Bool {
     let process = Process()
     let pipe = Pipe()
 
     process.standardOutput = pipe
     process.standardError = pipe
-    process.arguments = ["-c", command]
-    process.launchPath = "/bin/zsh"
+    process.arguments = arguments
+    process.launchPath = launchPath
 
     do {
         try process.run()
         process.waitUntilExit()
 
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(data: data, encoding: .utf8) ?? ""
-        print(output)
+        let status = process.terminationStatus
+        return status == 0
     } catch {
         print("Failed to execute command: \(error)")
-    }
-}
-
-func runSystemCommandWithOutput(_ command: String) -> Int32 {
-    let process = Process()
-    let pipe = Pipe()
-
-    process.standardOutput = pipe
-    process.standardError = pipe
-    process.arguments = ["-c", command]
-    process.launchPath = "/bin/zsh"
-
-    do {
-        try process.run()
-        process.waitUntilExit()
-        return process.terminationStatus
-    } catch {
-        print("Failed to execute command: \(error)")
-        return 1
+        return false
     }
 }
 

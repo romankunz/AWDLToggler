@@ -1,6 +1,13 @@
 import SwiftUI
 import Cocoa
 import ServiceManagement
+import Foundation
+
+// Updated protocol to match the new interface with Bool and Error? in the completion handler.
+@objc protocol AWDLHelperServiceProtocol {
+    func enableAWDL(with reply: @escaping (Bool, Error?) -> Void)
+    func disableAWDL(with reply: @escaping (Bool, Error?) -> Void)
+}
 
 @main
 struct AWDLTogglerApp: App {
@@ -16,6 +23,7 @@ struct AWDLTogglerApp: App {
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var statusItem: NSStatusItem?
     var statusMenuItem: NSMenuItem?
+    var helperConnection: NSXPCConnection?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -25,8 +33,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             button.image?.isTemplate = true // Ensure the image adapts to light/dark mode
         }
 
-        installHelperIfNeeded()
         constructMenu()
+        setupXPCConnection() // Set up the XPC connection
     }
 
     func constructMenu() {
@@ -43,35 +51,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
         statusItem?.menu = menu
         menu.delegate = self // Ensure AppDelegate is set as the menu's delegate
-    }
-
-    func installHelperIfNeeded() {
-        let helperBundleID = "com.rmak.AWDLHelper" // Ensure this matches your helper's CFBundleIdentifier
-        var authRef: AuthorizationRef?
-        var authStatus = OSStatus(errAuthorizationDenied)
-        
-        // Create an Authorization Reference
-        authStatus = AuthorizationCreate(nil, nil, [.extendRights, .interactionAllowed], &authRef)
-        
-        guard authStatus == errAuthorizationSuccess else {
-            print("Authorization failed: \(authStatus)")
-            return
-        }
-        
-        // Attempt to install the helper using SMJobBless
-        var error: Unmanaged<CFError>?
-        if SMJobBless(kSMDomainSystemLaunchd, helperBundleID as CFString, authRef, &error) {
-            print("Successfully installed helper.")
-        } else {
-            if let error = error?.takeRetainedValue() {
-                print("Failed to install helper with error: \(error)")
-            }
-        }
-        
-        // Always free the Authorization Reference when done
-        if authRef != nil {
-            AuthorizationFree(authRef!, [.destroyRights])
-        }
     }
 
     func menuWillOpen(_ menu: NSMenu) {
@@ -112,39 +91,52 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc func enableAWDL() {
-        runHelperCommand(["enable"])
+        guard let remote = helperConnection?.remoteObjectProxyWithErrorHandler({ error in
+            print("Received XPC error: \(error.localizedDescription)")
+        }) as? AWDLHelperServiceProtocol else {
+            return
+        }
+
+        remote.enableAWDL { (success, error) in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.statusMenuItem?.title = "Enable AWDL Failed: \(error.localizedDescription)"
+                } else if success {
+                    self.statusMenuItem?.title = "Status: UP"
+                } else {
+                    self.statusMenuItem?.title = "Enable AWDL Failed"
+                }
+            }
+        }
     }
     
     @objc func disableAWDL() {
-        runHelperCommand(["disable"])
+        guard let remote = helperConnection?.remoteObjectProxyWithErrorHandler({ error in
+            print("Received XPC error: \(error.localizedDescription)")
+        }) as? AWDLHelperServiceProtocol else {
+            return
+        }
+
+        remote.disableAWDL { (success, error) in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.statusMenuItem?.title = "Disable AWDL Failed: \(error.localizedDescription)"
+                } else if success {
+                    self.statusMenuItem?.title = "Status: DOWN"
+                } else {
+                    self.statusMenuItem?.title = "Disable AWDL Failed"
+                }
+            }
+        }
     }
-    
+
     @objc func terminateApp() {
         NSApplication.shared.terminate(nil)
     }
     
-    func runHelperCommand(_ arguments: [String]) {
-        // Define the path to the helper tool directly
-        let helperPath = "/Library/PrivilegedHelperTools/AWDLHelper"
-
-        let process = Process()
-        let pipe = Pipe()
-
-        // Set the launchPath for the Process to the direct path of the helper
-        process.launchPath = helperPath
-        process.arguments = arguments
-        process.standardOutput = pipe
-        process.standardError = pipe
-
-        do {
-            try process.run()
-            process.waitUntilExit()
-
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            let output = String(data: data, encoding: .utf8) ?? ""
-            print("Helper output: \(output)")
-        } catch {
-            print("Failed to run AWDLHelper: \(error)")
-        }
+    private func setupXPCConnection() {
+        helperConnection = NSXPCConnection(serviceName: "com.rmak.AWDLHelperService")
+        helperConnection?.remoteObjectInterface = NSXPCInterface(with: AWDLHelperServiceProtocol.self)
+        helperConnection?.resume()
     }
 }
