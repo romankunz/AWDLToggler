@@ -2,14 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- Enable App Sandbox (if applicable) -->
     <key>com.apple.security.app-sandbox</key>
     <true/>
-    <!-- Network client entitlement, if the helper makes network requests -->
     <key>com.apple.security.network.client</key>
     <true/>
-    <!-- File system read/write entitlements, if needed -->
-    <!-- Example for specific file system access -->
     <key>com.apple.security.files.user-selected.read-write</key>
     <true/>
     <!-- Specify any additional entitlements below as needed -->
