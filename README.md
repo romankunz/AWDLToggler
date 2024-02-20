@@ -1,8 +1,7 @@
 AWDLToggler: Seamless Control over Apple Wireless Direct Link Interface
 
 Overview
-AWDLToggler is a sophisticated, windowless agent designed to provide users with intuitive control over the Apple Wireless Direct Link (AWDL) interface directly from the macOS menu bar. This lightweight application allows users to effortlessly monitor the status of their AWDL interface—indic
-ating whether it is active or inactive—and offers the capability to enable or disable the interface with just a click. Developed with both simplicity and efficiency in mind, AWDLToggler caters to users who require quick access to their network settings without navigating through complex system preferences.
+AWDLToggler is a sophisticated, windowless agent designed to provide users with intuitive control over the Apple Wireless Direct Link (AWDL) interface directly from the macOS menu bar. This lightweight application allows users to effortlessly monitor the status of their AWDL interface—indicating whether it is active or inactive and offers the capability to enable or disable the interface with just a click. Developed with both simplicity and efficiency in mind, AWDLToggler caters to users who require quick access to their network settings without navigating through complex system preferences.
 
 Features
 Menu Bar Icon: A discreet yet accessible icon resides in your menu bar, providing at-a-glance status updates on the AWDL interface. This icon serves as a gateway to controlling your AWDL settings, ensuring that management of your wireless connection is always just a click away.
